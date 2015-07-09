@@ -1,0 +1,41 @@
+@font-face{
+    font-family: 'Circe Regular';
+    src: url('./fonts/circe-regular.eot');
+    src: url('./fonts/circe-regular.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/circe-regular.woff') format('woff'),
+    url('./fonts/circe-regular.ttf') format('truetype'),
+    url('./fonts/circe-regular.svg#Circe-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+	height: 100%;
+    min-width: 1040px;
+}
+
+.wrapper {
+    font-family: 'Circe Regular', Helvetica, sans-serif;
+    width: 100%;
+    min-width: 960px;
+    min-height: 100%;
+    padding: 24px;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+
+    &:hover {
+        color: #ff6733;
+    }
+}
+
+.clearfix {
+    display: table;
+    clear: both;
+}

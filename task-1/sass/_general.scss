@@ -1,6 +1,5 @@
 label {
     cursor: pointer;
-    @include user-select(none);
     width: 140px;
     height: 30px;
     text-align: center;
@@ -11,8 +10,7 @@ label {
     float:left;
     border: 1px inset #ddd;
     background: #d0d0d0;
-    background-image: none;
-    outline: 0;
+    @include user-select(none);
     @include box-shadow(inset 0 2px 4px rgba(0,0,0,0.15));
 
     &:first-of-type {
@@ -28,14 +26,12 @@ input[type=checkbox] {
     display: none;
 }
 
-input.input-all:checked ~ label.label-all,
 input.input-arrival:checked ~ label.label-arrival,
 input.input-departure:checked ~ label.label-departure {
     color: #999;
     background-color: #f5f5f5;
     background-repeat: repeat-x;
     border: 1px outset #e6e6e6;
-    //@include linear-gradient("top, #fff 0%, #e6e6e6 100%");
     @include box-shadow(inset 0 1px 0 rgba(255,255,255,0.2));
 }
 
@@ -44,15 +40,6 @@ input.input-departure:checked ~ table tr.arrival {
     display: none;
 }
 
-.sticky {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 100;
-    border-top: 0;
-    padding: 0 24px;
-}
 table {
     border-spacing: 0;
     border-collapse: collapse;
@@ -60,17 +47,37 @@ table {
     z-index: 1;
     margin: 32px 0 52px;
     width: 100%;
+    table-layout: fixed;
+    border: 2px solid #b7c7cf;
 
     thead {
-        td {
-            width: 200px;
-            background-color: lavender;
+        position: -webkit-sticky;
+        position: -moz-sticky;
+        position: -ms-sticky;
+        position: -o-sticky;
+        position: sticky;
+        top: 0px;
+
+        tr {
+            border-bottom: 2px solid #b7c7cf;
         }
 
+        td {
+            width: 120px;
+            height: 40px;
+            border-color: #b7c7cf;
+            background-color: rgba(230,240,240,1);
+            vertical-align: middle;
+        }
     }
 
-    tr:nth-child(odd):not([style*='display: none']) {
-        background-color: rgba(255,220,150,.2);
+    tbody {
+        color: #567;
+    }
+
+    tr.even {
+        background-color: rgba(200,200,200,.4);
+        @include transition(all .2s ease-in);
     }
 
     td, .row, .col {
@@ -78,13 +85,11 @@ table {
         text-align: center;
         padding: 10px;
         position: relative;
-        border: 1px solid #ddd;
+        border: 1px solid #eee;
     }
 
-    td { width: 200px; }
-
     tbody td:hover::before {
-        background-color: rgba(0,0,0,.2);
+        background-color: rgba(180,180,180,.8);
         content: '';
         height: 100%;
         left: -5000px;
@@ -95,7 +100,7 @@ table {
     }
 
     td:hover::after {
-        background-color: rgba(0,0,0,.2);
+        background-color: rgba(180,180,180,.8);
         content: '';
         height: 10000px;
         left: 0;
@@ -105,6 +110,7 @@ table {
         z-index: -1;
     }
 }
+
 
 .footer {
     position: relative;
@@ -122,4 +128,3 @@ table {
         color: #aaa;
     }
 }
-

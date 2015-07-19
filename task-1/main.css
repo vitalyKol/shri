@@ -42,6 +42,11 @@ a:hover {
   clear: both;
 }
 
+/* line 43, sass/_global.scss */
+.red {
+  color: #f00;
+}
+
 /* http://meyerweb.com/eric/tools/css/reset/ 
 	 v2.0 | 20110126
 	 License: none (public domain) */
@@ -383,13 +388,6 @@ input[type="checkbox"], input[type="radio"] {
 /* line 1, sass/_general.scss */
 label {
   cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  touch-callout: none;
   width: 140px;
   height: 30px;
   text-align: center;
@@ -400,30 +398,34 @@ label {
   float: left;
   border: 1px inset #ddd;
   background: #d0d0d0;
-  background-image: none;
-  outline: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-callout: none;
   -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
   -ms-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
   -o-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
-/* line 18, sass/_general.scss */
+/* line 16, sass/_general.scss */
 label:first-of-type {
   border-radius: 3px 0px 0px 3px;
 }
-/* line 22, sass/_general.scss */
+/* line 20, sass/_general.scss */
 label:last-of-type {
   border-radius: 0px 3px 3px 0px;
 }
 
-/* line 27, sass/_general.scss */
+/* line 25, sass/_general.scss */
 input[type=checkbox] {
   display: none;
 }
 
-/* line 33, sass/_general.scss */
-input.input-all:checked ~ label.label-all,
+/* line 30, sass/_general.scss */
 input.input-arrival:checked ~ label.label-arrival,
 input.input-departure:checked ~ label.label-departure {
   color: #999;
@@ -437,24 +439,13 @@ input.input-departure:checked ~ label.label-departure {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* line 43, sass/_general.scss */
+/* line 39, sass/_general.scss */
 input.input-arrival:checked ~ table tr.departure,
 input.input-departure:checked ~ table tr.arrival {
   display: none;
 }
 
-/* line 47, sass/_general.scss */
-.sticky {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  top: 0;
-  z-index: 100;
-  border-top: 0;
-  padding: 0 24px;
-}
-
-/* line 56, sass/_general.scss */
+/* line 43, sass/_general.scss */
 table {
   border-spacing: 0;
   border-collapse: collapse;
@@ -462,31 +453,54 @@ table {
   z-index: 1;
   margin: 32px 0 52px;
   width: 100%;
+  table-layout: fixed;
+  border: 2px solid #b7c7cf;
+}
+/* line 53, sass/_general.scss */
+table thead {
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+  position: sticky;
+  top: 0px;
+}
+/* line 61, sass/_general.scss */
+table thead tr {
+  border-bottom: 2px solid #b7c7cf;
 }
 /* line 65, sass/_general.scss */
 table thead td {
-  width: 200px;
-  background-color: lavender;
+  width: 120px;
+  height: 40px;
+  border-color: #b7c7cf;
+  background-color: #e6f0f0;
+  vertical-align: middle;
 }
-/* line 72, sass/_general.scss */
-table tr:nth-child(odd):not([style*='display: none']) {
-  background-color: rgba(255, 220, 150, 0.2);
+/* line 74, sass/_general.scss */
+table tbody {
+  color: #567;
 }
-/* line 76, sass/_general.scss */
+/* line 78, sass/_general.scss */
+table tr.even {
+  background-color: rgba(200, 200, 200, 0.4);
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -ms-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+/* line 83, sass/_general.scss */
 table td, table .row, table .col {
   cursor: pointer;
   text-align: center;
   padding: 10px;
   position: relative;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
 }
-/* line 84, sass/_general.scss */
-table td {
-  width: 200px;
-}
-/* line 86, sass/_general.scss */
+/* line 91, sass/_general.scss */
 table tbody td:hover::before {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(180, 180, 180, 0.8);
   content: '';
   height: 100%;
   left: -5000px;
@@ -495,9 +509,9 @@ table tbody td:hover::before {
   width: 10000px;
   z-index: -1;
 }
-/* line 97, sass/_general.scss */
+/* line 102, sass/_general.scss */
 table td:hover::after {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(180, 180, 180, 0.8);
   content: '';
   height: 10000px;
   left: 0;
@@ -507,14 +521,14 @@ table td:hover::after {
   z-index: -1;
 }
 
-/* line 109, sass/_general.scss */
+/* line 115, sass/_general.scss */
 .footer {
   position: relative;
   margin-top: -50px;
   height: 50px;
   clear: both;
 }
-/* line 115, sass/_general.scss */
+/* line 121, sass/_general.scss */
 .footer .footer__copyright {
   text-align: center;
   vertical-align: bottom;

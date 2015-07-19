@@ -8,27 +8,32 @@ var data = [
     }
 ];
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-    var stickyNavTop = $('table thead').offset().top,
-        element = null;
+    // init sticky header
+    if (!isStickySupported()) {
+        $('table').stickyTableHeaders();
+    }
 
-    var stickyNav = function(){
-        var scrollTop = $(window).scrollTop();
+    // setup even rows
+    $('table tbody tr:visible:even').addClass('even');
 
-        if (scrollTop > stickyNavTop) {
-            if (!element) { element = $('table thead').clone(true).appendTo($('table')).addClass('sticky'); }
-        } else {
-            element && element.remove();
-            element = null;
-        }
-    };
-
-    stickyNav();
-
-    $(window).scroll(function() {
-        stickyNav();
+    $('[name=type]').on('change', function () {
+        setTimeout(function () {
+            $('table tbody tr').removeClass('even');
+            $('table tbody tr:visible:even').addClass('even');
+        }, 0);
     });
 
-
 });
+
+function isStickySupported () {
+    var property = 'position',
+        value = 'sticky',
+        el = document.createElement('test'),
+        mStyle = el.style;
+
+    mStyle.cssText = property + ':' + ['-webkit-', '-moz-', '-ms-', '-o-', ''].join(value + ';' + property + ':') + value + ';';
+
+    return mStyle[property].indexOf(value) !== -1;
+}

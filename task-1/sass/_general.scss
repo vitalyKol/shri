@@ -7,19 +7,14 @@
     text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
     line-height: 1.6;
     font-size: 18px;
-    float:left;
+    float: left;
     border: 1px inset #ddd;
     background: #d0d0d0;
     @include user-select(none);
     @include box-shadow(inset 0 2px 4px rgba(0,0,0,0.15));
 
-    &:first-of-type {
-        border-radius: 3px 0px 0px 3px;
-    }
-
-    &:last-of-type {
-        border-radius: 0px 3px 3px 0px;
-    }
+    &:first-of-type { border-radius: 3px 0px 0px 3px; }
+    &:last-of-type { border-radius: 0px 3px 3px 0px; }
 }
 
 input[type=checkbox] {
@@ -40,12 +35,16 @@ input.input-departure:checked ~ table tr.departure {
     display: none;
 }
 
+.table-wrapper {
+    overflow: hidden;
+    margin: 32px 0 52px;
+}
+
 table {
     border-spacing: 0;
     border-collapse: collapse;
-    overflow: hidden;
+    overflow: auto;
     z-index: 1;
-    margin: 32px 0 52px;
     width: 100%;
     table-layout: fixed;
     font-size: 14px;
@@ -57,7 +56,7 @@ table {
         position: -ms-sticky;
         position: -o-sticky;
         position: sticky;
-        top: 0px;
+        top: 0;
 
         tr { border-bottom: 2px solid #b7c7cf; }
         td { border-color: #b7c7cf; background-color: #3B6E87; color: white; }
@@ -73,8 +72,8 @@ table {
     }
 
     td {
-        cursor: pointer;
         text-align: center;
+        //height: 70px;
         padding: 10px;
         position: relative;
         border: 1px solid #eee;

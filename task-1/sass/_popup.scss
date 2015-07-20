@@ -8,6 +8,7 @@
     min-width: 800px;
     height: 100%;
     text-align: center;
+    cursor: default;
     z-index: 9999;
     background: rgba(0, 0, 0, 0.8);
     @include transition(opacity 0.2s ease-in-out);
@@ -32,21 +33,28 @@
         background-color: white;
         font-size: 16px;
         margin: auto;
-        padding: 32px;
+        padding: 12px;
+        padding-bottom: 42px;
         width: 80%;
         @include transition (all 0.2s ease-in-out);
         @include transform(translateY(-100%));
         
         span { display: inline-block; }
+        div { margin-bottom: 24px; }
 
         ul li {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+
+            &:last-of-type { margin: 0; }
         }
 
         .popup-item-title {
             width: 40%;
+            margin-right: 6px;
             text-align: right;
             font-weight: bold;
+            text-decoration: underline;
+            vertical-align: top;
         }
 
         .popup-item-value {

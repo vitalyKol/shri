@@ -58,42 +58,41 @@ function rowTemplate (item) {
 }
 
 function popupTemplate (item) {
-    return '<ul>\
+    var type = (item.type == 'arival') ? 'прибытие' : 'отправление';
+
+    return '<h2>\
+                <span class="red">И</span>нформация о рейсе № ' + item.number + '\
+                <img src="img/' + item.type + '.png" width="30" />\
+            </h2>\
+            <div><img src="img/' + item.logo + '.png" /></div>\
+            <ul>\
                 <li>\
                     <span class="popup-item-title">Тип рейса:</span>\
-                    <span class="popup-item-value">item.</span>\
-                </li>\
-                <li>\
-                    <span class="popup-item-title">Номер рейса:</span>\
-                    <span class="popup-item-value">item.</span>\
+                    <span class="popup-item-value">' + type + '</span>\
                 </li>\
                 <li>\
                     <span class="popup-item-title">Авиакомпания:</span>\
-                    <span class="popup-item-value">item.</span>\
-                </li>\
-                <li>\
-                    <span class="popup-item-title">Логотип:</span>\
-                    <span class="popup-item-value">item.</span>\
+                    <span class="popup-item-value">' + item.company + '</span>\
                 </li>\
                 <li>\
                     <span class="popup-item-title">Тип воздушного судна:</span>\
-                    <span class="popup-item-value">item.</span>\
+                    <span class="popup-item-value">' + item.aircraft_full + '</span>\
                 </li>\
                 <li>\
                     <span class="popup-item-title">Аэропорт назначения:</span>\
-                    <span class="popup-item-value">item.</span>\
+                    <span class="popup-item-value">' + item.destination + '</span>\
                 </li>\
                 <li>\
                     <span class="popup-item-title">Время по расписанию:</span>\
-                    <span class="popup-item-value">item.</span>\
+                    <span class="popup-item-value">' + item.time + '</span>\
                 </li>\
                 <li>\
                     <span class="popup-item-title">Статус рейса:</span>\
-                    <span class="popup-item-value">item.</span>\
+                    <span class="popup-item-value">' + item.status + '</span>\
                 </li>\
                 <li>\
                     <span class="popup-item-title">Примечание:</span>\
-                    <span class="popup-item-value">item.</span>\
+                    <span class="popup-item-value">' + item.comment + '</span>\
                 </li>\
             </ul>'
 }

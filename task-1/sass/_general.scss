@@ -35,15 +35,11 @@ input.input-departure:checked ~ table tr.departure {
     display: none;
 }
 
-.table-wrapper {
-    overflow: hidden;
-    margin: 32px 0 52px;
-}
-
 table {
     border-spacing: 0;
     border-collapse: collapse;
-    overflow: auto;
+    margin: 32px 0 52px;
+    overflow: hidden;
     z-index: 1;
     width: 100%;
     table-layout: fixed;

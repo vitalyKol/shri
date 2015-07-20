@@ -1,16 +1,13 @@
 $(document).ready(function () {
 
-    // get data
     data.forEach(function (item) {
         $('table tbody').append($(rowTemplate(item)));
     });
 
-    // init sticky header
-    if (!isStickySupported()) {
+    //if (!isStickySupported()) {
         $('table').stickyTableHeaders();
-    }
+    //}
 
-    // setup even rows
     $('table tbody tr:visible:even').addClass('even');
 
     $('[name=type]').on('change', function () {
@@ -25,12 +22,12 @@ $(document).ready(function () {
 function isStickySupported () {
     var property = 'position',
         value = 'sticky',
-        el = document.createElement('test'),
-        mStyle = el.style;
+        el = document.createElement('div'),
+        elStyle = el.style;
 
-    mStyle.cssText = property + ':' + ['-webkit-', '-moz-', '-ms-', '-o-', ''].join(value + ';' + property + ':') + value + ';';
+    elStyle.cssText = property + ':' + ['-webkit-', '-moz-', '-ms-', '-o-', ''].join(value + ';' + property + ':') + value + ';';
 
-    return mStyle[property].indexOf(value) !== -1;
+    return elStyle[property].indexOf(value) !== -1;
 }
 
 function rowTemplate (item) {
@@ -38,12 +35,7 @@ function rowTemplate (item) {
                 <td class="type" style="background-image: url(img/' + item.type + '.png);"></td>\
                 <td>\
                     <a href="#flight' + item.number + '">' + item.number + '</a>\
-                    <div class="popup" id="flight' + item.number + '">\
-                        <div class="popup-content">\
-                            ' + popupTemplate(item) + '\
-                            <a href="#" class="close">Закрыть</a>\
-                        </div>\
-                    </div>\
+                    <div class="popup" id="flight' + item.number + '">' + popupTemplate(item) + '</div>\
                 </td>\
                 <td class="company">' + item.company + '</td>\
                 <td class="logo"><img src="img/' + item.logo + '.png" /></td>\
@@ -58,43 +50,47 @@ function rowTemplate (item) {
 }
 
 function popupTemplate (item) {
-    var type = (item.type == 'arival') ? 'прибытие' : 'отправление';
+    var type = (item.type == 'arrival') ? 'прибытие' : 'отправление';
 
-    return '<h2>\
-                <span class="red">И</span>нформация о рейсе № ' + item.number + '\
-                <img src="img/' + item.type + '.png" width="30" />\
-            </h2>\
-            <div><img src="img/' + item.logo + '.png" /></div>\
-            <ul>\
-                <li>\
-                    <span class="popup-item-title">Тип рейса:</span>\
-                    <span class="popup-item-value">' + type + '</span>\
-                </li>\
-                <li>\
-                    <span class="popup-item-title">Авиакомпания:</span>\
-                    <span class="popup-item-value">' + item.company + '</span>\
-                </li>\
-                <li>\
-                    <span class="popup-item-title">Тип воздушного судна:</span>\
-                    <span class="popup-item-value">' + item.aircraft_full + '</span>\
-                </li>\
-                <li>\
-                    <span class="popup-item-title">Аэропорт назначения:</span>\
-                    <span class="popup-item-value">' + item.destination + '</span>\
-                </li>\
-                <li>\
-                    <span class="popup-item-title">Время по расписанию:</span>\
-                    <span class="popup-item-value">' + item.time + '</span>\
-                </li>\
-                <li>\
-                    <span class="popup-item-title">Статус рейса:</span>\
-                    <span class="popup-item-value">' + item.status + '</span>\
-                </li>\
-                <li>\
-                    <span class="popup-item-title">Примечание:</span>\
-                    <span class="popup-item-value">' + item.comment + '</span>\
-                </li>\
-            </ul>'
+    return '<a href="#" class="popup-overlay"></a>\
+            <div class="popup-content">\
+                <h2>\
+                    <span class="red">И</span>нформация о рейсе № ' + item.number + '\
+                    <img src="img/' + item.type + '.png" width="30" />\
+                </h2>\
+                <div><img src="img/' + item.logo + '.png" /></div>\
+                <a href="#" class="popup-close">Закрыть</a>\
+                <ul>\
+                    <li>\
+                        <span class="popup-item-title">Тип рейса:</span>\
+                        <span class="popup-item-value">' + type + '</span>\
+                    </li>\
+                    <li>\
+                        <span class="popup-item-title">Авиакомпания:</span>\
+                        <span class="popup-item-value">' + item.company + '</span>\
+                    </li>\
+                    <li>\
+                        <span class="popup-item-title">Тип воздушного судна:</span>\
+                        <span class="popup-item-value">' + item.aircraft_full + '</span>\
+                    </li>\
+                    <li>\
+                        <span class="popup-item-title">Аэропорт назначения:</span>\
+                        <span class="popup-item-value">' + item.destination + '</span>\
+                    </li>\
+                    <li>\
+                        <span class="popup-item-title">Время по расписанию:</span>\
+                        <span class="popup-item-value">' + item.time + '</span>\
+                    </li>\
+                    <li>\
+                        <span class="popup-item-title">Статус рейса:</span>\
+                        <span class="popup-item-value">' + item.status + '</span>\
+                    </li>\
+                    <li>\
+                        <span class="popup-item-title">Примечание:</span>\
+                        <span class="popup-item-value">' + item.comment + '</span>\
+                    </li>\
+                </ul>\
+            </div>'
 }
 
 var data = [
@@ -252,5 +248,5 @@ var data = [
         time: '01:01',
         status: 'по расписанию',
         comment: 'информация будет доступна позже'
-    },
+    }
 ];

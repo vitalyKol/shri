@@ -1,7 +1,8 @@
-@import 'global';
-@import 'reset';
-@import 'normalize';
-@import 'mixins';
+@import 'utils/reset';
+@import 'utils/normalize';
+@import 'utils/mixins';
 
+@import 'global';
 @import 'general';
 @import 'popup';
+@import 'media';

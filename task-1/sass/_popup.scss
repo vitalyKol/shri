@@ -14,13 +14,13 @@
         opacity: 1;
         @include transition (opacity 0.2s ease-in-out);
 
-        .popup-content {
+        .popup__content {
             @include transition (all 0.2s ease-in-out);
             @include transform(translateY(0));
         }
     }
 
-    .popup-overlay {
+    .popup__overlay {
         content: "";
         position: absolute;
         top: 0;
@@ -31,7 +31,7 @@
         @include transition (opacity 0.2s ease-in-out);
     }
 
-    .popup-content {
+    .popup__content {
         position: relative;
         background-color: white;
         font-size: 16px;
@@ -45,13 +45,13 @@
         span { display: inline-block; }
         div { margin-bottom: 24px; }
 
-        ul li {
+        .params-list li {
             margin-bottom: 16px;
 
             &:last-of-type { margin: 0; }
         }
 
-        .popup-item-title {
+        .params-list__title {
             width: 40%;
             margin-right: 6px;
             text-align: right;
@@ -60,13 +60,13 @@
             vertical-align: top;
         }
 
-        .popup-item-value {
+        .params-list__value {
             width: 40%;
             text-align: left;
         }
     }
 
-    .popup-close {
+    .popup__close {
         position: absolute;
         top: 2%;
         right: 2%;

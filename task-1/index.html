@@ -26,26 +26,26 @@
             </div>
 
             <div class="main">
-                <input type="checkbox" name="type" class="input-arrival" id="arrival" />
-                <label for="arrival" class="btn label-arrival">Прибытие</label>
+                <input type="checkbox" name="type" class="main__input--arrival" id="arrival" />
+                <label for="arrival" class="btn main__label--arrival">Прибытие</label>
 
-                <input type="checkbox" name="type" class="input-departure" id="departure" />
-                <label for="departure" class="btn label-departure">Отправление</label>
+                <input type="checkbox" name="type" class="main__input--departure" id="departure" />
+                <label for="departure" class="btn main__label--departure">Отправление</label>
 
                 <div class="clearfix"></div>
 
-                <table>
+                <table class="board">
                     <thead>
                         <tr>
-                            <td class="type">Тип рейса</td>
-                            <td class="number">Номер рейса</td>
-                            <td class="company">Авиакомпания</td>
-                            <td>Логотип</td>
-                            <td>Тип воздушного судна</td>
-                            <td>Аэропорт назначения</td>
-                            <td class="time">Время по расписанию</td>
-                            <td>Статус рейса</td>
-                            <td>Примечание</td>
+                            <td class="board__item--type">Тип рейса</td>
+                            <td class="board__item--number">Номер рейса</td>
+                            <td class="board__item--company">Авиакомпания</td>
+                            <td class="board__item--logo">Логотип</td>
+                            <td class="board__item--aircraft">Тип воздушного судна</td>
+                            <td class="board__item--destination">Аэропорт назначения</td>
+                            <td class="board__item--time">Время по расписанию</td>
+                            <td class="board__item--status">Статус рейса</td>
+                            <td class="board__item--comment">Примечание</td>
                         </tr>
                     </thead>
                     <tbody></tbody>

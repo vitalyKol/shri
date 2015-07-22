@@ -33,7 +33,7 @@ function isStickySupported () {
 function rowTemplate (item) {
     return '<tr class="' + item.type + '">\
                 <td class="board__item--type" style="background-image: url(img/' + item.type + '.png);"></td>\
-                <td>\
+                <td class="board__item--number">\
                     <a href="#flight' + item.number + '">' + item.number + '</a>\
                     <div class="popup" id="flight' + item.number + '">' + popupTemplate(item) + '</div>\
                 </td>\
@@ -42,10 +42,10 @@ function rowTemplate (item) {
                 <td class="board__item--aircraft">\
                     <span data-full="' + item.aircraft_full + '" data-short="' + item.aircraft_short + '"></span>\
                 </td>\
-                <td>' + item.destination + '</td>\
-                <td>' + item.time + '</td>\
-                <td>' + item.status + '</td>\
-                <td>' + item.comment + '</td>\
+                <td class="board__item--destination">' + item.destination + '</td>\
+                <td class="board__item--time">' + item.time + '</td>\
+                <td class="board__item--status">' + item.status + '</td>\
+                <td class="board__item--comment">' + item.comment + '</td>\
             </tr>';
 }
 
@@ -53,7 +53,7 @@ function popupTemplate (item) {
     var type = (item.type == 'arrival') ? 'прибытие' : 'отправление';
 
     return '<a href="#" class="popup__overlay"></a>\
-            <div class="popup-content">\
+            <div class="popup__content">\
                 <h2>\
                     <span class="red">И</span>нформация о рейсе № ' + item.number + '\
                     <img src="img/' + item.type + '.png" width="30" />\

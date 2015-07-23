@@ -1,20 +1,24 @@
 $(document).ready(function () {
 
     data.forEach(function (item) {
-        $('table tbody').append($(rowTemplate(item)));
+        $('.board tbody').append($(rowTemplate(item)));
     });
 
     //if (!isStickySupported()) {
-        $('table').stickyTableHeaders();
+        $('.board').stickyTableHeaders();
     //}
 
-    $('table tbody tr:visible:even').addClass('even');
+    $('.board tbody tr:visible:even').addClass('even');
 
     $('[name=type]').on('change', function () {
         setTimeout(function () {
-            $('table tbody tr').removeClass('even');
-            $('table tbody tr:visible:even').addClass('even');
+            $('.board tbody tr').removeClass('even');
+            $('.board tbody tr:visible:even').addClass('even');
         }, 0);
+    });
+
+    $('.board tbody td').on('touchstart', function () {
+        $(this).focus();
     });
 
 });

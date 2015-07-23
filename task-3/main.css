@@ -1,0 +1,401 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+	 v2.0 | 20110126
+	 License: none (public domain) */
+/* line 5, sass/utils/_reset.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+/* line 26, sass/utils/_reset.scss */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* line 30, sass/utils/_reset.scss */
+body {
+  line-height: 1;
+}
+
+/* line 33, sass/utils/_reset.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 36, sass/utils/_reset.scss */
+blockquote, q {
+  quotes: none;
+}
+
+/* line 39, sass/utils/_reset.scss */
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+/* line 44, sass/utils/_reset.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 45, sass/utils/_normalize.scss */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section,
+summary {
+  display: block;
+}
+
+/* line 61, sass/utils/_normalize.scss */
+audio,
+canvas,
+video {
+  display: inline-block;
+}
+
+/* line 74, sass/utils/_normalize.scss */
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+/* line 84, sass/utils/_normalize.scss */
+[hidden], template {
+  display: none;
+}
+
+/* line 97, sass/utils/_normalize.scss */
+html {
+  background: #fff;
+  color: #000;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* line 109, sass/utils/_normalize.scss */
+html,
+button,
+input,
+select,
+textarea {
+  font-family: sans-serif;
+}
+
+/* line 119, sass/utils/_normalize.scss */
+body {
+  margin: 0;
+}
+
+/* line 132, sass/utils/_normalize.scss */
+a {
+  background: transparent;
+}
+/* line 139, sass/utils/_normalize.scss */
+a:focus {
+  outline: thin dotted;
+}
+/* line 145, sass/utils/_normalize.scss */
+a:hover, a:active {
+  outline: 0;
+}
+
+/* line 159, sass/utils/_normalize.scss */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/* line 164, sass/utils/_normalize.scss */
+h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+}
+
+/* line 169, sass/utils/_normalize.scss */
+h3 {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+
+/* line 174, sass/utils/_normalize.scss */
+h4 {
+  font-size: 1em;
+  margin: 1.33em 0;
+}
+
+/* line 179, sass/utils/_normalize.scss */
+h5 {
+  font-size: 0.83em;
+  margin: 1.67em 0;
+}
+
+/* line 184, sass/utils/_normalize.scss */
+h6 {
+  font-size: 0.75em;
+  margin: 2.33em 0;
+}
+
+/* line 192, sass/utils/_normalize.scss */
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+/* line 198, sass/utils/_normalize.scss */
+b,
+strong {
+  font-weight: bold;
+}
+
+/* line 211, sass/utils/_normalize.scss */
+dfn {
+  font-style: italic;
+}
+
+/* line 217, sass/utils/_normalize.scss */
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+/* line 233, sass/utils/_normalize.scss */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, serif;
+  font-size: 1em;
+}
+
+/* line 246, sass/utils/_normalize.scss */
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* line 254, sass/utils/_normalize.scss */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+/* line 270, sass/utils/_normalize.scss */
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+/* line 279, sass/utils/_normalize.scss */
+small {
+  font-size: 80%;
+}
+
+/* line 286, sass/utils/_normalize.scss */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+/* line 294, sass/utils/_normalize.scss */
+sup {
+  top: -0.5em;
+}
+
+/* line 298, sass/utils/_normalize.scss */
+sub {
+  bottom: -0.25em;
+}
+
+/* line 350, sass/utils/_normalize.scss */
+img {
+  border: 0;
+}
+
+/* line 359, sass/utils/_normalize.scss */
+svg:not(:root) {
+  overflow: hidden;
+}
+
+/* line 369, sass/utils/_normalize.scss */
+figure {
+  margin: 0;
+}
+
+/* line 386, sass/utils/_normalize.scss */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+/* line 397, sass/utils/_normalize.scss */
+legend {
+  border: 0;
+  padding: 0;
+  white-space: normal;
+}
+
+/* line 411, sass/utils/_normalize.scss */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+}
+
+/* line 426, sass/utils/_normalize.scss */
+button, input {
+  line-height: normal;
+}
+
+/* line 435, sass/utils/_normalize.scss */
+button,
+select {
+  text-transform: none;
+}
+
+/* line 448, sass/utils/_normalize.scss */
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+/* line 461, sass/utils/_normalize.scss */
+button[disabled],
+input[disabled] {
+  cursor: default;
+}
+
+/* line 470, sass/utils/_normalize.scss */
+button::-moz-focus-inner, input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+/* line 479, sass/utils/_normalize.scss */
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+
+/* line 490, sass/utils/_normalize.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 498, sass/utils/_normalize.scss */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+/* line 506, sass/utils/_normalize.scss */
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+/* line 516, sass/utils/_normalize.scss */
+input[type="checkbox"], input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'Circe Regular';
+  src: url("./fonts/circe-regular.eot");
+  src: url("./fonts/circe-regular.eot?#iefix") format("embedded-opentype"), url("./fonts/circe-regular.woff") format("woff"), url("./fonts/circe-regular.ttf") format("truetype"), url("./fonts/circe-regular.svg#Circe-Regular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+/* line 12, sass/_global.scss */
+html, body {
+  height: 100%;
+  min-width: 480px;
+}
+
+/* line 17, sass/_global.scss */
+.wrapper {
+  font-family: 'Circe Regular', Helvetica, sans-serif;
+  width: 100%;
+  min-height: 100%;
+  padding: 24px;
+}
+
+/* line 24, sass/_global.scss */
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 28, sass/_global.scss */
+a {
+  display: inline-block;
+  color: #7C85C9;
+  text-decoration: none;
+  border-bottom: 1px dashed #7C85C9 !important;
+}
+/* line 34, sass/_global.scss */
+a:hover {
+  border-bottom: 1px dashed transparent !important;
+}
+
+/* line 39, sass/_global.scss */
+.clearfix {
+  display: table;
+  clear: both;
+}
+
+/* line 44, sass/_global.scss */
+.red {
+  color: #f00;
+}
+
+/* line 1, sass/_general.scss */
+.player {
+  width: 480px;
+}
+/* line 4, sass/_general.scss */
+.player > div {
+  padding: 12px;
+  margin: 12px 0;
+  border: 1px solid black;
+}

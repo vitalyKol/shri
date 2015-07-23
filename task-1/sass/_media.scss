@@ -2,12 +2,16 @@
 @media screen and (min-width: 640px) and (max-width: 1024px) {
     .board__item--company { display: none; }
     .board__item--comment { display: none; }
+    .board__item--type { width: 60px!important; }
+    .board__item--number { width: 60px!important; }
+    .board__item--time { width: 60px!important; }
     .board__item--aircraft span:before { content: attr(data-short)!important; }
 }
 /* Mobile */
 @media screen and (max-width: 640px) {
     .board__item--type { width: 60px!important; }
     .board__item--number { width: 60px!important; }
+    .board__item--time { width: 60px!important; }
     .board__item--aircraft { display: none; }
     .board__item--company { display: none; }
     .board__item--status { display: none; }

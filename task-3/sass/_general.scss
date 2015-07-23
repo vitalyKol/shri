@@ -5,6 +5,45 @@
         padding: 12px;
         margin: 12px 0;
         border: 1px solid black;
+        border-radius: 4px;
     }
 
+    .player__visual {
+        .visualization {}
+        .info {}
+    }
+
+    .player__control {
+
+    }
+
+    .player__upload {
+
+        .dropzone {
+            background-color: #ccc;
+            height: 60px;
+        }
+    }
+
+    .player__playlist {
+
+    }
+
+}
+
+.footer {
+    position: relative;
+    clear: both;
+    height: 50px;
+    margin-top: -50px;
+
+    .footer__copyright {
+        font-size: 12px;
+        position: absolute;
+        bottom: 30px;
+        width: 100%;
+        text-align: center;
+        vertical-align: bottom;
+        color: #aaa;
+    }
 }

@@ -7,9 +7,9 @@ var audioPlayer = (function () {
 
     var context = new (window.AudioContext || window.webkitAudioContext)(),
         audio = new Audio(),
-        volume, source, filters;
-
-    var filesList = [];
+        volume, source, filters,
+        filesList = [],
+        progressTouched;
 
     var EQ_PRESETS = {
         pop: [-2, -1, 0, 2, 4, 4, 2, 0, -1, -2],
@@ -41,15 +41,19 @@ var audioPlayer = (function () {
     function setupListeners () {
         document.addEventListener('drop', function (e) { e.preventDefault(); });
         document.addEventListener('dragover', function (e) { e.preventDefault(); }); 
+    
+        volumeInput.oninput      = function (e) { volume.gain.value = e.target.value; }
+        progressBar.onmousedown  = function (e) { progressTouched = true; updateProgressOnClick(e.clientX); }
+        progressBar.onmousemove  = function (e) { updateProgressOnClick(e.clientX); }
+        progressBar.onmouseup    = function (e) { progressTouched = false; }
+        progressBar.onmouseleave = function (e) { progressTouched = false; }
 
-        fileInput.onchange  = handleFileUpload;
-        volumeInput.oninput = handleVolumeChange;
-        playButton.onclick  = handlePlayClick;
-        stopButton.onclick  = handleStopClick;
-        dropzone.ondrop     = handleFileUpload;
-        audio.ontimeupdate  = updateProgressBar;
-        progressBar.onclick = handleProgressBarClick;
-        equalizer.onchange  = setEqualizerPreset;
+        fileInput.onchange = handleFileUpload;
+        playButton.onclick = handlePlayClick;
+        stopButton.onclick = handleStopClick;
+        dropzone.ondrop    = handleFileUpload;
+        audio.ontimeupdate = updateProgressOnPlay;
+        equalizer.onchange = setEqualizerPreset;
     }
 
     function setupEqualizer () {
@@ -99,10 +103,6 @@ var audioPlayer = (function () {
         filesList.push(files[0]);
     }
 
-    function handleVolumeChange (e) {
-        volume.gain.value = e.target.value;
-    }
-
     function handlePlayClick () {
         if (audio.paused) {
             audio.play();
@@ -118,7 +118,7 @@ var audioPlayer = (function () {
         }
     }
 
-    function updateProgressBar () {
+    function updateProgressOnPlay () {
         var value = 0;
 
         if (audio.currentTime > 0) {
@@ -128,12 +128,14 @@ var audioPlayer = (function () {
         progressMeter.style.width = value + "%";
     }
 
-    function handleProgressBarClick (e) {
-        var x = e.clientX - progressMeter.offsetLeft,
+    function updateProgressOnClick (clientX) {
+        var x = clientX - progressMeter.offsetLeft,
             width = x * 100 / progressBar.clientWidth;
 
-        progressMeter.style.width = width + '%';
-        audio.currentTime = audio.duration * width / 100;
+        if (progressTouched && audio.duration) {
+            progressMeter.style.width = width + '%';
+            audio.currentTime = audio.duration * width / 100;
+        }
     }
 
     function setEqualizerPreset (e) {

@@ -9,7 +9,7 @@ var audioPlayer = (function () {
     var context = new (window.AudioContext || window.webkitAudioContext)(),
         audio = new Audio(),
         volume, source, filters,
-        filesList = [], currentFile = 0,
+        tracklist = [], currentFile = 0,
         progressTouched;
 
     var EQ_PRESETS = {
@@ -44,18 +44,19 @@ var audioPlayer = (function () {
         document.addEventListener('drop', function (e) { e.preventDefault(); });
         document.addEventListener('dragover', function (e) { e.preventDefault(); }); 
     
-        playButton.onclick       = function (e) { if (filesList.length) handlePlayClick(); }
-        stopButton.onclick       = function (e) { if (filesList.length) handleStopClick(); }
+        playButton.onclick       = function (e) { if (tracklist.length) handlePlayClick(); }
+        stopButton.onclick       = function (e) { if (tracklist.length) handleStopClick(); }
         volumeInput.oninput      = function (e) { volume.gain.value = e.target.value; }
-        progressBar.onmousedown  = function (e) { progressTouched = true; updateProgressOnClick(e.clientX); }
-        progressBar.onmousemove  = function (e) { updateProgressOnClick(e.clientX); }
+        dropzone.ondragover      = function (e) { e.preventDefault(); e.stopPropagation(); e.dataTransfer.dropEffect = 'copy'; }
+        progressBar.onmousedown  = function (e) { progressTouched = true; setProgress(e.clientX); }
+        progressBar.onmousemove  = function (e) { setProgress(e.clientX); }
         progressBar.onmouseup    = function (e) { progressTouched = false; }
         progressBar.onmouseleave = function (e) { progressTouched = false; }
-        audio.onended            = function (e) { changeFile(1); }
+        audio.onended            = function (e) { changeTrack(1); }
 
         fileInput.onchange = handleFileUpload;
         dropzone.ondrop    = handleFileUpload;
-        audio.ontimeupdate = updateProgressOnPlay;
+        audio.ontimeupdate = updateProgress;
         equalizer.onchange = setEqualizerPreset;
         list.onclick       = handleListItemClick;
     }
@@ -101,20 +102,30 @@ var audioPlayer = (function () {
             files = e.target.files;
         }
 
-        if (!filesList.length) {
+        if (files[0].type.indexOf('audio') == -1) {
+            alert('Неподдерживаемый тип файла');
+            return;
+        }
+
+        if (!tracklist.length) {
             audio.src = URL.createObjectURL(files[0]);
         }
 
-        playlist.innerHTML += ('<li data-id="' + filesList.length + '"><span>' + files[0].name + '</span><div class="delete"></div></li>');
-        filesList.push(files[0]);
+        playlist.innerHTML += ('<li data-id="' + tracklist.length + '"><span>' + files[0].name + '</span><div class="delete"></div></li>');
+        tracklist.push(files[0]);
     }
 
     function handlePlayClick () {
         if (audio.paused) {
             audio.play();
+            playButton.classList.add('pause');
+            playButton.classList.remove('play');
+            updateCurrentTrack(true);
         } else {
             audio.pause();
-            updateCurrentFile();
+            playButton.classList.add('play');
+            playButton.classList.remove('pause');
+            updateCurrentTrack();
         }
     }
 
@@ -122,26 +133,29 @@ var audioPlayer = (function () {
         audio.pause();
         audio.currentTime = 0;
         progressMeter.style.width = 0;
-        updateCurrentFile();
+        playButton.classList.add('play');
+        playButton.classList.remove('pause');
+        updateCurrentTrack();
     }
 
-    function changeFile (i) {
-        updateCurrentFile();
+    function changeTrack (i) {
+        updateCurrentTrack();
         currentFile = Math.max(0, currentFile + i);
 
-        if (currentFile < filesList.length) {
-            audio.src = URL.createObjectURL(filesList[currentFile]);
+        if (currentFile < tracklist.length) {
+            audio.src = URL.createObjectURL(tracklist[currentFile]);
             audio.play();
         } else {
             currentFile = 0;
-            audio.src = URL.createObjectURL(filesList[currentFile]);
+            audio.src = URL.createObjectURL(tracklist[currentFile]);
+            playButton.classList.add('play');
+            playButton.classList.remove('pause');
         }
 
-        updateCurrentFile(true);
-        updateProgressOnPlay();
+        updateCurrentTrack(true);
     }
 
-    function updateCurrentFile (keep) {
+    function updateCurrentTrack (keep) {
         var tracks = $$('.player__playlist li');
 
         if (keep) {
@@ -151,7 +165,7 @@ var audioPlayer = (function () {
         }
     }
 
-    function updateProgressOnPlay () {
+    function updateProgress () {
         var value = 0;
 
         if (audio.currentTime > 0) {
@@ -161,7 +175,7 @@ var audioPlayer = (function () {
         progressMeter.style.width = value + '%';
     }
 
-    function updateProgressOnClick (clientX) {
+    function setProgress (clientX) {
         var x = clientX - progressMeter.offsetLeft,
             width = x * 100 / progressBar.clientWidth;
 
@@ -181,14 +195,14 @@ var audioPlayer = (function () {
 
     function handleListItemClick (e) {
         if (e.target.nodeName === 'SPAN') {
-            changeFile(e.target.parentNode.attributes['data-id'].value - currentFile);
+            changeTrack(e.target.parentNode.attributes['data-id'].value - currentFile);
         } else if (e.target.nodeName === 'DIV') {
             var element = e.target.parentNode;
 
-            filesList.splice(element.attributes['data-id'].value, 1);
+            tracklist.splice(element.attributes['data-id'].value, 1);
             element.parentElement.removeChild(element);
             updateListItems();
-            changeFile(1);
+            changeTrack(1);
         }
     }
 

@@ -25,12 +25,6 @@
                 <div class="player__visual">
                     <div class="visualization"></div>
                     <div class="info"></div>
-                </div>
-
-                <div class="player__control">
-                    <button class="play">&#9658;</button>
-                    <button class="stop">&#9724;</button>
-
                     <select class="equalizer">
                         <option value="pop">Pop</option>
                         <option value="rock">Rock</option>
@@ -38,10 +32,16 @@
                         <option value="classic">Classic</option>
                         <option value="normal">Normal</option>
                     </select>
+                </div>
+
+                <div class="player__control">
+                    <button class="play"></button>
+                    <button class="stop"></button>
+
+                    <div class="progress-bar"><span></span></div>
 
                     <input type="range" min="0" max="1" value=".62" step=".05"/>
 
-                    <div class="progress-bar"><span></span></div>
                 </div>
 
                 <div class="player__upload">

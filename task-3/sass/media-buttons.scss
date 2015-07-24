@@ -1,0 +1,50 @@
+button {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #2e6da4;
+    width: 30px;
+    height: 30px;
+    background: #337ab7;
+    border-radius: 4px;
+    @include transition(background .2s ease-out);
+
+    &:focus { outline: 0; }
+    &:hover { background: #286090; border-color: #204d74; }
+
+    &:before, &.pause:after {
+        position: absolute;
+        content: '';
+    }
+
+    &.play:before {
+        z-index: 2;
+        top: 6px;
+        left: 8px;
+        width: 0;
+        height: 0;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-left: 14px solid #fff;
+    }
+
+    &.stop:before {
+        top: 7px;
+        left: 7px;
+        width: 14px;
+        height: 14px;
+        background: #fff;
+    }
+
+    &.pause:before, &.pause:after {
+        height: 14px;
+        width: 6px;
+        left: 7px;
+        top: 7px;
+        display: block;
+        background-color: #fff;
+    }
+
+    &.pause:after {
+        left: 15px;
+    }
+}

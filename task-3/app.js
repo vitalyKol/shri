@@ -1,14 +1,15 @@
 var audioPlayer = (function () {
     'use strict';
 
-    var $ = document.querySelector.bind(document);
+    var $  = document.querySelector.bind(document),
+        $$ = document.querySelectorAll.bind(document);
 
-    var fileInput, volumeInput, playButton, stopButton, dropzone, playlist, progressBar, progressMeter, equalizer;
+    var fileInput, volumeInput, playButton, stopButton, dropzone, playlist, progressBar, progressMeter, equalizer, list;
 
     var context = new (window.AudioContext || window.webkitAudioContext)(),
         audio = new Audio(),
         volume, source, filters,
-        filesList = [],
+        filesList = [], currentFile = 0,
         progressTouched;
 
     var EQ_PRESETS = {
@@ -27,33 +28,36 @@ var audioPlayer = (function () {
     }
 
     function setupElements () {
-        fileInput = $('input[type="file"]');
-        volumeInput = $('input[type="range"]');
-        playButton = $('.play');
-        stopButton = $('.stop');
-        dropzone = $('.dropzone');
-        playlist = $('.player__playlist ul');
-        progressBar = $('.progress-bar');
+        fileInput     = $('input[type="file"]');
+        volumeInput   = $('input[type="range"]');
+        playButton    = $('.play');
+        stopButton    = $('.stop');
+        dropzone      = $('.dropzone');
+        playlist      = $('.player__playlist ul');
+        progressBar   = $('.progress-bar');
         progressMeter = $('.progress-bar span');
-        equalizer = $('.equalizer');
+        equalizer     = $('.equalizer');
+        list          = $('.player__playlist ul');
     }
 
     function setupListeners () {
         document.addEventListener('drop', function (e) { e.preventDefault(); });
         document.addEventListener('dragover', function (e) { e.preventDefault(); }); 
     
+        playButton.onclick       = function (e) { if (filesList.length) handlePlayClick(); }
+        stopButton.onclick       = function (e) { if (filesList.length) handleStopClick(); }
         volumeInput.oninput      = function (e) { volume.gain.value = e.target.value; }
         progressBar.onmousedown  = function (e) { progressTouched = true; updateProgressOnClick(e.clientX); }
         progressBar.onmousemove  = function (e) { updateProgressOnClick(e.clientX); }
         progressBar.onmouseup    = function (e) { progressTouched = false; }
         progressBar.onmouseleave = function (e) { progressTouched = false; }
+        audio.onended            = function (e) { changeFile(1); }
 
         fileInput.onchange = handleFileUpload;
-        playButton.onclick = handlePlayClick;
-        stopButton.onclick = handleStopClick;
         dropzone.ondrop    = handleFileUpload;
         audio.ontimeupdate = updateProgressOnPlay;
         equalizer.onchange = setEqualizerPreset;
+        list.onclick       = handleListItemClick;
     }
 
     function setupEqualizer () {
@@ -62,7 +66,7 @@ var audioPlayer = (function () {
         filters = frequencies.map(function (frequency) {
             var filter = context.createBiquadFilter();
 
-            filter.type = "peaking";
+            filter.type = 'peaking';
             filter.frequency.value = frequency;
             filter.Q.value = 1;
             filter.gain.value = 0;
@@ -91,15 +95,17 @@ var audioPlayer = (function () {
 
         var files;
 
-        if (e.target.nodeName === "DIV") {
+        if (e.target.nodeName === 'DIV') {
             files = e.dataTransfer.files;
-        } else if (e.target.nodeName === "INPUT") {
+        } else if (e.target.nodeName === 'INPUT') {
             files = e.target.files;
         }
 
-        audio.src = URL.createObjectURL(files[0]);
+        if (!filesList.length) {
+            audio.src = URL.createObjectURL(files[0]);
+        }
 
-        playlist.innerHTML += ('<li>' + files[0].name + '</li>');
+        playlist.innerHTML += ('<li data-id="' + filesList.length + '"><span>' + files[0].name + '</span><div class="delete"></div></li>');
         filesList.push(files[0]);
     }
 
@@ -108,13 +114,40 @@ var audioPlayer = (function () {
             audio.play();
         } else {
             audio.pause();
+            updateCurrentFile();
         }
     }
 
     function handleStopClick () {
-        if (!audio.paused) {
-            audio.pause();
-            audio.currentTime = 0;
+        audio.pause();
+        audio.currentTime = 0;
+        progressMeter.style.width = 0;
+        updateCurrentFile();
+    }
+
+    function changeFile (i) {
+        updateCurrentFile();
+        currentFile = Math.max(0, currentFile + i);
+
+        if (currentFile < filesList.length) {
+            audio.src = URL.createObjectURL(filesList[currentFile]);
+            audio.play();
+        } else {
+            currentFile = 0;
+            audio.src = URL.createObjectURL(filesList[currentFile]);
+        }
+
+        updateCurrentFile(true);
+        updateProgressOnPlay();
+    }
+
+    function updateCurrentFile (keep) {
+        var tracks = $$('.player__playlist li');
+
+        if (keep) {
+            tracks[currentFile].classList.add('current');
+        } else {
+            tracks[currentFile].classList.remove('current');
         }
     }
 
@@ -125,7 +158,7 @@ var audioPlayer = (function () {
             value = ((100 / audio.duration) * audio.currentTime).toFixed(2);
         }
 
-        progressMeter.style.width = value + "%";
+        progressMeter.style.width = value + '%';
     }
 
     function updateProgressOnClick (clientX) {
@@ -143,6 +176,17 @@ var audioPlayer = (function () {
 
         for (var i = 0, len = filters.length; i < len; i++) {
             filters[i].gain.value = EQ_PRESETS[preset][i];
+        }
+    }
+
+    function handleListItemClick (e) {
+        if (e.target.nodeName === 'LI') {
+            changeFile(e.target.attributes['data-id'].value - currentFile);
+        } else if (e.target.nodeName === 'SPAN') {
+            var element = e.target.parentNode;
+
+            filesList.splice(element.attributes['data-id'].value, 1);
+            element.parentElement.removeChild(element);
         }
     }
 

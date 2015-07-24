@@ -180,13 +180,23 @@ var audioPlayer = (function () {
     }
 
     function handleListItemClick (e) {
-        if (e.target.nodeName === 'LI') {
-            changeFile(e.target.attributes['data-id'].value - currentFile);
-        } else if (e.target.nodeName === 'SPAN') {
+        if (e.target.nodeName === 'SPAN') {
+            changeFile(e.target.parentNode.attributes['data-id'].value - currentFile);
+        } else if (e.target.nodeName === 'DIV') {
             var element = e.target.parentNode;
 
             filesList.splice(element.attributes['data-id'].value, 1);
             element.parentElement.removeChild(element);
+            updateListItems();
+            changeFile(1);
+        }
+    }
+
+    function updateListItems () {
+        var listItems = $$('.player__playlist li');
+
+        for (var i = 0, len = listItems.length; i < len; i++) {
+            listItems[i].attributes['data-id'].value = i;
         }
     }
 

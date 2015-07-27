@@ -145,10 +145,11 @@
             position: relative;
             border-bottom: 1px solid rgba(0,0,0,.1);
             border-radius: 4px;
+            color: #707070;
             @include transition(background .2s ease-out);
 
             &:last-of-type { border: none; }
-            &.current { font-weight: bold; }
+            &.current { font-weight: bold; color: black; }
             &:hover { background-color: rgba(0,0,0,.1); }
 
             span {

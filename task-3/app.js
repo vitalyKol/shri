@@ -102,16 +102,18 @@ var audioPlayer = (function () {
     function setupPlayer () {
         if (!audioContext.createGain) audioContext.createGain = audioContext.createGainNode;
 
-        volume = audioContext.createGain();
         source = audioContext.createMediaElementSource(audio);
+        volume = audioContext.createGain();
         analyser = audioContext.createAnalyser();
 
         filters[filters.length - 1].connect(audioContext.destination);
         filters[filters.length - 1].connect(analyser);
+
         source.connect(volume);
-        analyser.connect(audioContext.destination);
         volume.connect(audioContext.destination);
+
         volume.connect(analyser);
+        analyser.connect(audioContext.destination);
     }
 
     function setupVisualization () {

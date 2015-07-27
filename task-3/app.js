@@ -21,7 +21,7 @@ var audioPlayer = (function () {
     var context = new (window.AudioContext || window.webkitAudioContext)(),
         audio = new Audio(),
         volume, source, filters,
-        tracklist = [], currentFile = 0,
+        tracklist = [], currentTrack = 0,
         progressTouched;
 
     var analyser, animationId, canvas, canvasWidth, canvasHeight, canvasContext;
@@ -36,10 +36,10 @@ var audioPlayer = (function () {
 
     function init () {
         setupElements();
+        setupListeners();
         setupEqualizer();
         setupPlayer();
         setupVisualization();
-        setupListeners();
     }
 
     function setupElements () {
@@ -100,13 +100,16 @@ var audioPlayer = (function () {
     }
 
     function setupPlayer () {
+        if (!context.createGain) context.createGain = context.createGainNode;
+
         volume = context.createGain();
         source = context.createMediaElementSource(audio);
-        source.connect(volume);
-        volume.connect(filters[0]);
         analyser = context.createAnalyser();
         filters[filters.length - 1].connect(context.destination);
         filters[filters.length - 1].connect(analyser);
+        source.connect(volume);
+        volume.connect(context.destination);
+        volume.connect(analyser);
     }
 
     function setupVisualization () {
@@ -148,7 +151,7 @@ var audioPlayer = (function () {
             playButton.classList.remove('play');
             updateCurrentTrack('keep');
             setVisualization(visualization.value);
-            updateMeta(tracklist[currentFile]);
+            updateMeta(tracklist[currentTrack]);
         } else {
             audio.pause();
             playButton.classList.add('play');
@@ -168,27 +171,33 @@ var audioPlayer = (function () {
 
     function changeTrack (i) {
         updateCurrentTrack();
-        currentFile = Math.max(0, currentFile + i);
+        currentTrack = Math.max(0, currentTrack + i);
 
         if (!tracklist.length) {
             audio.pause();
+            currentTrack = 0;
             audio.currentTime = 0;
             progressMeter.style.width = 0;
+            playButton.classList.add('play');
+            playButton.classList.remove('pause');
             updateMeta();
             return;
         }
 
-        if (currentFile < tracklist.length) {
-            audio.src = URL.createObjectURL(tracklist[currentFile]);
+        if (currentTrack < tracklist.length && tracklist[currentTrack]) {
+            audio.src = URL.createObjectURL(tracklist[currentTrack]);
             audio.play();
+            playButton.classList.add('pause');
+            playButton.classList.remove('play');
+            setVisualization(visualization.value);
         } else {
-            currentFile = 0;
-            audio.src = URL.createObjectURL(tracklist[currentFile]);
+            currentTrack = 0;
+            audio.src = URL.createObjectURL(tracklist[currentTrack]);
             playButton.classList.add('play');
             playButton.classList.remove('pause');
         }
 
-        updateMeta(tracklist[currentFile]);
+        updateMeta(tracklist[currentTrack]);
         updateCurrentTrack('keep');
     }
 
@@ -198,9 +207,9 @@ var audioPlayer = (function () {
         if (!tracks.length) return;
 
         if (action === 'keep') {
-            tracks[currentFile].classList.add('current');
+            tracks[currentTrack].classList.add('current');
         } else {
-            tracks[currentFile].classList.remove('current');
+            tracks[currentTrack].classList.remove('current');
         }
     }
 
@@ -234,7 +243,7 @@ var audioPlayer = (function () {
 
     function handleListItemClick (e) {
         if (e.target.nodeName === 'SPAN') {
-            changeTrack(e.target.parentNode.attributes['data-id'].value - currentFile);
+            changeTrack(e.target.parentNode.attributes['data-id'].value - currentTrack);
         } else if (e.target.nodeName === 'DIV') {
             var element = e.target.parentNode;
 
@@ -279,7 +288,7 @@ var audioPlayer = (function () {
 
         var gradient = canvasContext.createLinearGradient(0, 0, 0, 300);
         gradient.addColorStop(1, '#0F0');
-        gradient.addColorStop(0.5, '#FF0');
+        gradient.addColorStop(0.2, '#FF0');
         gradient.addColorStop(0, '#F00');
 
         var draw = function () {

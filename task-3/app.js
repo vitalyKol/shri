@@ -4,7 +4,7 @@ var audioPlayer = (function () {
     var $  = document.querySelector.bind(document),
         $$ = document.querySelectorAll.bind(document);
 
-    window.requestAnimationFrame = (function () {
+    var requestAnimationFrame = (function () {
         return  window.requestAnimationFrame       || 
                 window.webkitRequestAnimationFrame || 
                 window.mozRequestAnimationFrame    || 
@@ -14,8 +14,9 @@ var audioPlayer = (function () {
                     window.setTimeout(callback, 1000 / 60);
                 }
     })();
+    var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
-    var fileInput, volumeInput, playButton, stopButton, dropzone, playlist, progressBar, progressMeter, equalizer;
+    var fileInput, volumeInput, playButton, stopButton, dropzone, playlist, progressBar, progressMeter, equalizer, visualization;
 
     var context = new (window.AudioContext || window.webkitAudioContext)(),
         audio = new Audio(),
@@ -24,6 +25,10 @@ var audioPlayer = (function () {
         progressTouched;
 
     var analyser, animationId, canvas, canvasWidth, canvasHeight, canvasContext, gradient;
+
+    var analyserFunctions = {
+
+    }
 
     var EQ_PRESETS = {
         pop:     [-2, -1, 0, 2, 4, 4, 2, 0, -1, -2],
@@ -51,6 +56,7 @@ var audioPlayer = (function () {
         progressBar   = $('.progress-bar');
         progressMeter = $('.progress-bar span');
         equalizer     = $('.equalizer');
+        visualization = $('.visualization');
     }
 
     function setupListeners () {
@@ -65,12 +71,13 @@ var audioPlayer = (function () {
         progressBar.onmouseup    = function (e) { progressTouched = false; }
         progressBar.onmouseleave = function (e) { progressTouched = false; }
         audio.onended            = function (e) { changeTrack(1); }
+        visualization.onchange   = function (e) { setVisualization(e.target.value); }
 
-        fileInput.onchange = handleFileUpload;
-        dropzone.ondrop    = handleFileUpload;
-        audio.ontimeupdate = updateProgress;
-        equalizer.onchange = setEqualizerPreset;
-        playlist.onclick   = handleListItemClick;
+        fileInput.onchange     = handleFileUpload;
+        dropzone.ondrop        = handleFileUpload;
+        audio.ontimeupdate     = updateProgress;
+        equalizer.onchange     = setEqualizerPreset;
+        playlist.onclick       = handleListItemClick;
     }
 
     function setupEqualizer () {
@@ -142,7 +149,7 @@ var audioPlayer = (function () {
             playButton.classList.add('pause');
             playButton.classList.remove('play');
             updateCurrentTrack(true);
-            drawSpectrum();
+            setVisualization(visualization.value);
         } else {
             audio.pause();
             playButton.classList.add('play');
@@ -236,24 +243,56 @@ var audioPlayer = (function () {
         }
     }
 
+    function setVisualization (type) {
+        if (animationId) cancelAnimationFrame(animationId);
+
+        switch (type) {
+            case 'waveform':
+                drawWaveform();
+                break;
+
+            case 'spectrum':
+                drawSpectrum();
+                break;
+        }
+    }
+
     function drawSpectrum () {
         var capYPositionArray = [],
             capHeight = 2,
             capStyle = 'white',
+            allCapsReachBottom = false,
             meterWidth = 6,
             meterNum = canvasWidth / (meterWidth + 2);
 
         canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 
         var drawMeter = function () {
-            var array = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(array);
+            var dataArray = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(dataArray);
 
-            var step = Math.round(array.length / meterNum) ;
+            var step = Math.round(dataArray.length / meterNum) ;
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 
+            if (audio.paused) {
+                for (var i = dataArray.length - 1; i >= 0; i--) {
+                    dataArray[i] = 0;
+                }
+
+                allCapsReachBottom = true;
+
+                for (var i = capYPositionArray.length - 1; i >= 0; i--) {
+                    allCapsReachBottom = allCapsReachBottom && (capYPositionArray[i] === 0);
+                }
+
+                if (allCapsReachBottom) {
+                    cancelAnimationFrame(animationId);
+                    return;
+                }
+            }
+
             for (var i = 0; i < meterNum; i++) {
-                var value = array[i * step];
+                var value = dataArray[i * step];
 
                 if (capYPositionArray.length < Math.round(meterNum)) {
                     capYPositionArray.push(value);
@@ -276,6 +315,49 @@ var audioPlayer = (function () {
         }
 
         animationId = requestAnimationFrame(drawMeter);
+    }
+
+    function drawWaveform () {
+        var bufferLength = analyser.frequencyBinCount,
+            dataArray = new Uint8Array(bufferLength);
+
+        canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        var draw = function () {
+            animationId = requestAnimationFrame(draw);
+            analyser.getByteTimeDomainData(dataArray);
+            canvasContext.fillStyle = 'black';
+            canvasContext.fillRect(0, 0, canvasWidth, canvasHeight);
+            canvasContext.lineWidth = 2;
+            canvasContext.strokeStyle = '#9FEE00';
+            canvasContext.beginPath();
+
+            if (audio.paused) {
+                cancelAnimationFrame(animationId);
+                return;
+            }
+
+            var sliceWidth = canvasWidth * 1.0 / bufferLength,
+                x = 0;
+
+            for (var i = 0; i < bufferLength; i++) {
+                var v = dataArray[i] / 128.0,
+                    y = v * canvasHeight / 2;
+
+                if (i === 0) {
+                    canvasContext.moveTo(x, y);
+                } else {
+                    canvasContext.lineTo(x, y);
+                }
+
+                x += sliceWidth;
+            }
+
+            canvasContext.lineTo(canvas.width, canvas.height / 2);
+            canvasContext.stroke();
+        }
+
+        draw();
     }
 
     return {

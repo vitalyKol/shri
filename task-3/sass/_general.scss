@@ -19,19 +19,20 @@
         h1 { margin: 0; }
     }
 
-    .player__visual {
-        .visualization canvas {
+    .player__settings {
+        canvas {
             width: 100%;
             height: 150px;
             background-color: black;
         }
         
-        .info {}
-        select { font-size: 12px; }
+        select, label { font-size: 12px; }
     }
 
     .player__control {
         @include user-select(none);
+
+        .info {}
 
         button { vertical-align: middle; }
 

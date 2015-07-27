@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=480, maximum-scale=1" />
 
         <link rel="stylesheet" href="main.css">
+        <script src="vendor/id3-minimized.js"></script>
         <script src="app.js"></script>
     </head>
     <body>
@@ -22,9 +23,16 @@
                     <h1><span class="red">А</span>удио плеер v. 1.0</h1>
                 </div>
 
-                <div class="player__visual">
-                    <div class="visualization"></div>
-                    <div class="info"></div>
+                <div class="player__settings">
+                    <canvas class="canvas"></canvas>
+
+                    <label>Визуализация:</label>
+                    <select class="visualization">
+                        <option value="waveform">Waveform</option>
+                        <option value="spectrum">Spectrum</option>
+                    </select>
+
+                    <label>Эквалайзер:</label>
                     <select class="equalizer">
                         <option value="pop">Pop</option>
                         <option value="rock">Rock</option>
@@ -35,6 +43,12 @@
                 </div>
 
                 <div class="player__control">
+                    <div class="meta">
+                        <span class="meta-label">Исполнитель: </span><span class="meta-artist"></span>
+                        <br/>
+                        <span class="meta-label">Композиция: </span><span class="meta-title"></span>
+                    </div>
+
                     <button class="play"></button>
                     <button class="stop"></button>
 

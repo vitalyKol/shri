@@ -32,9 +32,13 @@
     .player__control {
         @include user-select(none);
 
-        .info { font-size: 14px; margin-bottom: 12px; }
-
         button { vertical-align: middle; }
+
+        .meta {
+            font-size: 14px; margin-bottom: 12px;
+
+            span.meta-label { font-weight: bold; }
+        }
 
         .progress-bar {
             display: inline-block;

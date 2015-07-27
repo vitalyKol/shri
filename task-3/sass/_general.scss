@@ -32,7 +32,7 @@
     .player__control {
         @include user-select(none);
 
-        .info {}
+        .info { font-size: 14px; margin-bottom: 12px; }
 
         button { vertical-align: middle; }
 

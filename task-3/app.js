@@ -16,7 +16,7 @@ var audioPlayer = (function () {
     })();
     var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
-    var fileInput, volumeInput, playButton, stopButton, dropzone, playlist, progressBar, progressMeter, equalizer, visualization;
+    var fileInput, volumeInput, playButton, stopButton, dropzone, playlist, progressBar, progressMeter, equalizer, visualization, metaInfo;
 
     var context = new (window.AudioContext || window.webkitAudioContext)(),
         audio = new Audio(),
@@ -57,6 +57,7 @@ var audioPlayer = (function () {
         progressMeter = $('.progress-bar span');
         equalizer     = $('.equalizer');
         visualization = $('.visualization');
+        metaInfo      = $('.info');
     }
 
     function setupListeners () {
@@ -150,6 +151,7 @@ var audioPlayer = (function () {
             playButton.classList.remove('play');
             updateCurrentTrack(true);
             setVisualization(visualization.value);
+            updateMeta(tracklist[currentFile]);
         } else {
             audio.pause();
             playButton.classList.add('play');
@@ -165,6 +167,7 @@ var audioPlayer = (function () {
         playButton.classList.add('play');
         playButton.classList.remove('pause');
         updateCurrentTrack();
+        metaInfo.innerHTML = '';
     }
 
     function changeTrack (i) {
@@ -181,6 +184,7 @@ var audioPlayer = (function () {
             playButton.classList.remove('pause');
         }
 
+        updateMeta(tracklist[currentFile]);
         updateCurrentTrack(true);
     }
 
@@ -358,6 +362,14 @@ var audioPlayer = (function () {
         }
 
         draw();
+    }
+
+    function updateMeta (track) {
+        ID3.loadTags(track.name, function () {
+            var tags = ID3.getAllTags(track.name);
+
+            metaInfo.innerHTML = tags.artist + " - " + tags.title;
+        });
     }
 
     return {

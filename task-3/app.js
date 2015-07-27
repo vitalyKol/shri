@@ -26,10 +26,6 @@ var audioPlayer = (function () {
 
     var analyser, animationId, canvas, canvasWidth, canvasHeight, canvasContext, gradient;
 
-    var analyserFunctions = {
-
-    }
-
     var EQ_PRESETS = {
         pop:     [-2, -1, 0, 2, 4, 4, 2, 0, -1, -2],
         rock:    [-1, 1, 2, 3, -1, -1, 0, 0, 4, 4],
@@ -149,7 +145,7 @@ var audioPlayer = (function () {
             audio.play();
             playButton.classList.add('pause');
             playButton.classList.remove('play');
-            updateCurrentTrack(true);
+            updateCurrentTrack('keep');
             setVisualization(visualization.value);
             updateMeta(tracklist[currentFile]);
         } else {
@@ -185,13 +181,13 @@ var audioPlayer = (function () {
         }
 
         updateMeta(tracklist[currentFile]);
-        updateCurrentTrack(true);
+        updateCurrentTrack('keep');
     }
 
-    function updateCurrentTrack (keep) {
+    function updateCurrentTrack (action) {
         var tracks = $$('.player__playlist li');
 
-        if (keep) {
+        if (action === 'keep') {
             tracks[currentFile].classList.add('current');
         } else {
             tracks[currentFile].classList.remove('current');
@@ -361,7 +357,7 @@ var audioPlayer = (function () {
             canvasContext.stroke();
         }
 
-        draw();
+        animationId = requestAnimationFrame(draw);
     }
 
     function updateMeta (track) {

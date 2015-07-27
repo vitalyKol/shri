@@ -239,17 +239,17 @@ var audioPlayer = (function () {
     function drawSpectrum () {
         var capYPositionArray = [],
             capHeight = 2,
-            capStyle = 'rgb(255, 0, 0)',
-            meterWidth = 10,
+            capStyle = 'white',
+            meterWidth = 6,
             meterNum = canvasWidth / (meterWidth + 2);
 
         canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 
-        function drawMeter () {
+        var drawMeter = function () {
             var array = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(array);
 
-            var step = Math.round(array.length / meterNum);
+            var step = Math.round(array.length / meterNum) ;
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 
             for (var i = 0; i < meterNum; i++) {
@@ -262,14 +262,14 @@ var audioPlayer = (function () {
                 canvasContext.fillStyle = capStyle;
 
                 if (value < capYPositionArray[i]) {
-                    canvasContext.fillRect(i * 12, canvasHeight - (--capYPositionArray[i]), meterWidth, capHeight);
+                    canvasContext.fillRect(i * 8, canvasHeight - (--capYPositionArray[i]), meterWidth, capHeight);
                 } else {
-                    canvasContext.fillRect(i * 12, canvasHeight - value, meterWidth, capHeight);
+                    canvasContext.fillRect(i * 8, canvasHeight - value, meterWidth, capHeight);
                     capYPositionArray[i] = value;
                 }
 
-                canvasContext.fillStyle = 'rgb(255, 255, 0)';
-                canvasContext.fillRect(i * 12 , canvasHeight - value + capHeight, meterWidth, canvasHeight);
+                canvasContext.fillStyle = '#9FEE00';
+                canvasContext.fillRect(i * 8 , canvasHeight - value + capHeight, meterWidth, canvasHeight + value);
             }
 
             animationId = requestAnimationFrame(drawMeter);

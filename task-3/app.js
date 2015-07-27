@@ -18,7 +18,7 @@ var audioPlayer = (function () {
 
     var fileInput, volumeInput, playButton, stopButton, dropzone, playlist, progressBar, progressMeter, equalizer, visualization, metaArtist, metaTitle;
 
-    var context = new (window.AudioContext || window.webkitAudioContext)(),
+    var audioContext = new (window.AudioContext || window.webkitAudioContext)(),
         audio = new Audio(),
         volume, source, filters,
         tracklist = [], currentTrack = 0,
@@ -82,7 +82,7 @@ var audioPlayer = (function () {
         var frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
         
         filters = frequencies.map(function (frequency) {
-            var filter = context.createBiquadFilter();
+            var filter = audioContext.createBiquadFilter();
 
             filter.type = 'peaking';
             filter.frequency.value = frequency;
@@ -100,15 +100,17 @@ var audioPlayer = (function () {
     }
 
     function setupPlayer () {
-        if (!context.createGain) context.createGain = context.createGainNode;
+        if (!audioContext.createGain) audioContext.createGain = audioContext.createGainNode;
 
-        volume = context.createGain();
-        source = context.createMediaElementSource(audio);
-        analyser = context.createAnalyser();
-        filters[filters.length - 1].connect(context.destination);
+        volume = audioContext.createGain();
+        source = audioContext.createMediaElementSource(audio);
+        analyser = audioContext.createAnalyser();
+
+        filters[filters.length - 1].connect(audioContext.destination);
         filters[filters.length - 1].connect(analyser);
         source.connect(volume);
-        volume.connect(context.destination);
+        analyser.connect(audioContext.destination);
+        volume.connect(audioContext.destination);
         volume.connect(analyser);
     }
 

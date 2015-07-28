@@ -117,13 +117,13 @@ var audioPlayer = (function () {
         volume = audioContext.createGain();
         analyser = audioContext.createAnalyser();
 
-        filters[filters.length - 1].connect(audioContext.destination);
         filters[filters.length - 1].connect(analyser);
+        filters[filters.length - 1].connect(audioContext.destination);
 
-        source.connect(volume);
+        volume.connect(filters[0]);
         volume.connect(audioContext.destination);
-
         volume.connect(analyser);
+        source.connect(volume);
         analyser.connect(audioContext.destination);
     }
 

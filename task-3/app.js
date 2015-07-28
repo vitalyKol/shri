@@ -15,10 +15,15 @@ var audioPlayer = (function () {
                 }
     })();
     var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
-
     var fileInput, volumeInput, playButton, stopButton, dropzone, playlist, progressBar, progressMeter, equalizer, visualization, metaArtist, metaTitle;
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
 
-    var audioContext = new (window.AudioContext || window.webkitAudioContext)(),
+    if (!AudioContext) {
+        alert('Ваш браузер не поддреживает Web Audio API');
+        return
+    }
+
+    var audioContext = new AudioContext(),
         audio = new Audio(),
         volume, source, filters,
         tracklist = [], currentTrack = 0,

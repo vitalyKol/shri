@@ -16,11 +16,12 @@ var audioPlayer = (function () {
     })();
     var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
     var fileInput, volumeInput, playButton, stopButton, dropzone, playlist, progressBar, progressMeter, equalizer, visualization, metaArtist, metaTitle;
+    var analyser, animationId, canvas, canvasWidth, canvasHeight, canvasContext;
     var AudioContext = window.AudioContext || window.webkitAudioContext;
 
     if (!AudioContext) {
         alert('Ваш браузер не поддреживает Web Audio API');
-        return
+        return;
     }
 
     var audioContext = new AudioContext(),
@@ -28,8 +29,6 @@ var audioPlayer = (function () {
         volume, source, filters,
         tracklist = [], currentTrack = 0,
         progressTouched;
-
-    var analyser, animationId, canvas, canvasWidth, canvasHeight, canvasContext;
 
     var EQ_PRESETS = {
         pop:     [-2, -1, 0, 2, 4, 4, 2, 0, -1, -2],
@@ -42,9 +41,9 @@ var audioPlayer = (function () {
     function init () {
         setupElements();
         setupListeners();
+        setupCanvas();
         setupEqualizer();
         setupPlayer();
-        setupVisualization();
     }
 
     function setupElements () {
@@ -83,6 +82,13 @@ var audioPlayer = (function () {
         playlist.onclick   = handleListItemClick;
     }
 
+    function setupCanvas () {
+        canvas = $('.canvas');
+        canvasWidth = canvas.width;
+        canvasHeight = canvas.height;
+        canvasContext = canvas.getContext('2d');
+    }
+
     function setupEqualizer () {
         var frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
         
@@ -119,13 +125,6 @@ var audioPlayer = (function () {
 
         volume.connect(analyser);
         analyser.connect(audioContext.destination);
-    }
-
-    function setupVisualization () {
-        canvas = $('.canvas');
-        canvasWidth = canvas.width;
-        canvasHeight = canvas.height;
-        canvasContext = canvas.getContext('2d');
     }
 
     function handleFileUpload (e) {

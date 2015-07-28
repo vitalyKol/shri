@@ -7,6 +7,15 @@ $font-footer: #aaa;
 .main {
     font-size: 0;
 
+    a {
+        display: inline-block;
+        color: $blue-light;
+        text-decoration: none;
+        border-bottom: 1px dashed $blue-light !important;
+
+        &:hover { border-bottom: 1px dashed transparent !important; }
+    }
+
     .btn {
         display: inline-block;
         font-size: 18px;
